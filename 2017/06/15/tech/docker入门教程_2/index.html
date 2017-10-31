@@ -70,7 +70,7 @@
 <p>&#160;&#160; 比如我们现在运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build .</div><div class="line"><span class="comment">#这个命令没有指定Dockerfile的位置，你可以使用docker build --help 查看</span></div><div class="line"><span class="comment">#缺省Dockerfile 是PATH/Dockerfile ./Dockerfile 是存在的这个文件的</span></div></pre></td></tr></table></figure></p>
 <p>&#160;&#160; 它做了什么呢，执行构建的是Docker守护进程，而不是docker cli，做的第一件事就是将.(当前整个目录)的文件发给Docker daemon。 大部分情况下，应该将Dockerfile放到一个空的目录下面，最好只放一个Dockerfile文件。（警告： 当然不要使用根目录，如果将dockerfile放到根目录<code>/</code>，构建的时候，会将整个硬盘的所有内容copy一份到Docker daemon）。还好docker 有.dockerignore文件，类似.gitignore，此处省略多字，相信你能明白。</p>
 <p>&#160;&#160; 当然我们也可以指定Dockerfile的路径</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build <span class="_">-f</span> /path/<span class="keyword">in</span>/you/any/<span class="built_in">local</span>/filesystem/Dockerfile</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build -f /path/<span class="keyword">in</span>/you/any/<span class="built_in">local</span>/filesystem/Dockerfile</div></pre></td></tr></table></figure>
 <p>&#160;&#160; 可以构建不同tag的多个镜像，like this（本机测试）:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">docker</span> <span class="selector-tag">build</span> . <span class="selector-tag">-t</span> <span class="selector-tag">nginx</span><span class="selector-pseudo">:v333.01</span> <span class="selector-tag">-t</span> <span class="selector-tag">ngnix</span><span class="selector-pseudo">:v333.02</span></div></pre></td></tr></table></figure></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build . -t nginx:v333.01 -t ngnix:v333.02</div><div class="line">Sending build context to Docker daemon 3.072 kB</div><div class="line">Step 1/3 : FROM nginx</div><div class="line"> ---&gt; 958a7ae9e569</div><div class="line">Step 2/3 : CMD <span class="built_in">echo</span> <span class="variable">$HOME</span></div><div class="line"> ---&gt; Running <span class="keyword">in</span> 1ad7f1dd9964</div><div class="line"> ---&gt; 66e037162e28</div><div class="line">Removing intermediate container 1ad7f1dd9964</div><div class="line">Step 3/3 : RUN <span class="built_in">echo</span> <span class="string">'&lt;h1&gt; Hello. Docker ! second version &lt;/h1&gt;'</span> &gt; /usr/share/nginx/html/index.html &amp;&amp; <span class="built_in">echo</span> <span class="string">'what s going on'</span></div><div class="line"></div><div class="line">---&gt; Running <span class="keyword">in</span> 7ae3b76417c6</div><div class="line">what s going on</div><div class="line"> ---&gt; d4e9bdc765e4</div><div class="line">Removing intermediate container 7ae3b76417c6</div><div class="line">Successfully built d4e9bdc765e4</div></pre></td></tr></table></figure>
 <p>&#160;&#160; 最终的结果：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">nginx               v333.01             d4e9bdc765e4        30 seconds ago      109 MB</div><div class="line">ngnix               v333.02             d4e9bdc765e4        30 seconds ago      109 MB</div></pre></td></tr></table></figure></p>
@@ -114,7 +114,7 @@
 <p>EXPOSE</p>
 </blockquote>
 <p>&#160;&#160; 这个不是暴露端口，该指令告知Docker这个容器在运行的时候监听的那些端口。这并不会让HOST访问到容器的这些端口，如果你要达到这个目的，要使用-p参数，比如我们启动一个nginx:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run <span class="_">-d</span> -p 81:80 --name nginx-web nginx:latest</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run -d -p 81:80 --name nginx-web nginx:latest</div></pre></td></tr></table></figure>
 <p>&#160;&#160; 这样就会暴露容器的80端口给host的81端口，可以直接localhost:81访问container的nginx服务。也可以不这样做，比如我们在Dockerfile里面声明了多个端口: 80 90 </p>
 <p>&#160;&#160; 在启动容器的时候这样写 docker run -d <code>-P</code> –name container-name image:tag 这样会自动将container的90 80端口暴露给host。我们可以通过docker ps  查看ports这一项。</p>
 <blockquote>
@@ -140,6 +140,10 @@
 </article>
 
 <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2017/10/29/宽心谣/">
+      《宽心谣》  ← prev 
+    </a>
     
     <span class="page-number">•</span>
     

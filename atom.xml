@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Riptide</title>
+  
   <subtitle>Look at the stars,look how they shine for you</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://thekevin.cn/"/>
-  <updated>2017-06-19T15:33:12.000Z</updated>
+  <updated>2017-10-30T09:59:39.000Z</updated>
   <id>http://thekevin.cn/</id>
   
   <author>
@@ -16,81 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>《宽心谣》</title>
+    <link href="http://thekevin.cn/2017/10/29/%E5%AE%BD%E5%BF%83%E8%B0%A3/"/>
+    <id>http://thekevin.cn/2017/10/29/宽心谣/</id>
+    <published>2017-10-29T09:41:09.000Z</published>
+    <updated>2017-10-30T09:59:39.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>日出东海落西山，愁也一天，喜也一天。<br>遇事不钻牛角尖，人也舒坦，心也舒坦。<br>每月领取活命钱，多也喜欢，少也喜欢。<br>少荤多素日三餐，粗也香甜，细也香甜。<br>新旧衣服不挑拣，好也御寒，赖也御寒。<br>常与知已聊聊天，古也谈谈，今也谈谈。<br>内孙外孙同样看，儿也心欢，女也心欢。<br>全家老少互慰勉，贫也相安，富也相安。<br>早晚操劳勤锻炼，忙也乐观，闲也乐观。<br>心宽体健养天年，不是神仙，胜似神仙</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;日出东海落西山，愁也一天，喜也一天。&lt;br&gt;遇事不钻牛角尖，人也舒坦，心也舒坦。&lt;br&gt;每月领取活命钱，多也喜欢，少也喜欢。&lt;br&gt;少荤多素日三餐，粗也香甜，细也香甜。&lt;br&gt;新旧衣服不挑拣，好也御寒，赖也御寒。&lt;br&gt;常与知已聊聊天，古也谈谈，今也谈谈。&lt;br&gt;内孙外孙同
+      
+    
+    </summary>
+    
+      <category term="杂记" scheme="http://thekevin.cn/categories/%E6%9D%82%E8%AE%B0/"/>
+    
+    
+      <category term="随笔" scheme="http://thekevin.cn/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+      <category term="诗词" scheme="http://thekevin.cn/tags/%E8%AF%97%E8%AF%8D/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用dockerfile构建镜像&lt;一&gt;</title>
     <link href="http://thekevin.cn/2017/06/15/tech/docker%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B_2/"/>
     <id>http://thekevin.cn/2017/06/15/tech/docker入门教程_2/</id>
     <published>2017-06-14T16:46:24.000Z</published>
     <updated>2017-06-19T15:33:12.000Z</updated>
     
-    <content type="html"><![CDATA[<p>&#160;&#160; 今天我们来学习一下利用dockerfile 来构建镜像。<br><a id="more"></a><br>&#160;&#160; 我们知道 <code>docker comit</code> 命令也可以构建一个新的镜像，但是这个操作大部分情况下是不可控制的，这个操作对镜像的操作都是黑箱操作，除了制作镜像的人知道执行过什么命令，怎么生成的镜像，其他的人不知道。 而且： docker commit 这个操作，是在原有镜像的基础上，每执行一次命令，就会在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像。</p>
-<p>&#160;&#160; 这样如果使用docker commit 制作镜像，以及后期修改的话，每一次修改都会让镜像更加臃肿一次。</p>
-<p>&#160;&#160; 所以我们要使用dockerfile 来构建镜像, 按照<a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="external">官方文档</a>的解释，dockerfile是一个文本文件，这个文本文件包含了用户想聚合或者配置到镜像里面所需要的所有指令。</p>
-<blockquote>
-<p>怎么使用？</p>
-</blockquote>
-<p>&#160;&#160; 使用<code>docker build</code> 命令来构建镜像，但是这个命令需要一个Dockerfile文件 和  <em>上下文</em> （或者直接理解为一个目录的内容吧，po主自己加的）。 构建上下文指的是在本地路径 <code>PATH</code> 或者 <code>URL</code> 范围内的所有文件。 PATH 指的是本地文件系统， URL 特指Git 仓库地址。 </p>
-<p>&#160;&#160; 当前目录是这样的，存在两个文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ls</span></div><div class="line">Dockerfile        Dockerfile.ubuntu</div></pre></td></tr></table></figure></p>
-<p>&#160;&#160; 比如我们现在运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build .</div><div class="line"><span class="comment">#这个命令没有指定Dockerfile的位置，你可以使用docker build --help 查看</span></div><div class="line"><span class="comment">#缺省Dockerfile 是PATH/Dockerfile ./Dockerfile 是存在的这个文件的</span></div></pre></td></tr></table></figure></p>
-<p>&#160;&#160; 它做了什么呢，执行构建的是Docker守护进程，而不是docker cli，做的第一件事就是将.(当前整个目录)的文件发给Docker daemon。 大部分情况下，应该将Dockerfile放到一个空的目录下面，最好只放一个Dockerfile文件。（警告： 当然不要使用根目录，如果将dockerfile放到根目录<code>/</code>，构建的时候，会将整个硬盘的所有内容copy一份到Docker daemon）。还好docker 有.dockerignore文件，类似.gitignore，此处省略多字，相信你能明白。</p>
-<p>&#160;&#160; 当然我们也可以指定Dockerfile的路径</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build <span class="_">-f</span> /path/<span class="keyword">in</span>/you/any/<span class="built_in">local</span>/filesystem/Dockerfile</div></pre></td></tr></table></figure>
-<p>&#160;&#160; 可以构建不同tag的多个镜像，like this（本机测试）:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">docker</span> <span class="selector-tag">build</span> . <span class="selector-tag">-t</span> <span class="selector-tag">nginx</span><span class="selector-pseudo">:v333.01</span> <span class="selector-tag">-t</span> <span class="selector-tag">ngnix</span><span class="selector-pseudo">:v333.02</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build . -t nginx:v333.01 -t ngnix:v333.02</div><div class="line">Sending build context to Docker daemon 3.072 kB</div><div class="line">Step 1/3 : FROM nginx</div><div class="line"> ---&gt; 958a7ae9e569</div><div class="line">Step 2/3 : CMD <span class="built_in">echo</span> <span class="variable">$HOME</span></div><div class="line"> ---&gt; Running <span class="keyword">in</span> 1ad7f1dd9964</div><div class="line"> ---&gt; 66e037162e28</div><div class="line">Removing intermediate container 1ad7f1dd9964</div><div class="line">Step 3/3 : RUN <span class="built_in">echo</span> <span class="string">'&lt;h1&gt; Hello. Docker ! second version &lt;/h1&gt;'</span> &gt; /usr/share/nginx/html/index.html &amp;&amp; <span class="built_in">echo</span> <span class="string">'what s going on'</span></div><div class="line"></div><div class="line">---&gt; Running <span class="keyword">in</span> 7ae3b76417c6</div><div class="line">what s going on</div><div class="line"> ---&gt; d4e9bdc765e4</div><div class="line">Removing intermediate container 7ae3b76417c6</div><div class="line">Successfully built d4e9bdc765e4</div></pre></td></tr></table></figure>
-<p>&#160;&#160; 最终的结果：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">nginx               v333.01             d4e9bdc765e4        30 seconds ago      109 MB</div><div class="line">ngnix               v333.02             d4e9bdc765e4        30 seconds ago      109 MB</div></pre></td></tr></table></figure></p>
-<hr>
-<p>&#160;&#160; 我们来看 Dockerfile的格式。<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">INSTRUCTION arguments</span></div></pre></td></tr></table></figure></p>
-<p>&#160;&#160; 这里的INSTRUCTION指令有多个关键字: <code>FROM</code>, <code>RUN</code>, <code>CMD</code>, <code>LABEL</code>, <code>EXPOSE</code>, <code>ENV</code>, <code>ADD</code>, <code>COPY</code>, <code>ENTRYPOINT</code>…</p>
-<blockquote>
-<p>ENV</p>
-</blockquote>
-<p>&#160;&#160; 我们先说ENV,env 大白话可以理解为环境变量。语法是这样：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ENV &lt;key&gt; &lt;value&gt;</div><div class="line">ENV &lt;key&gt; = &lt;value&gt;</div><div class="line"></div><div class="line"><span class="comment">#这样声明，这种声明方式只能声明单个变量</span></div><div class="line">ENV usr root</div><div class="line"><span class="comment">#这种声明方式可以声明多个环境变量</span></div><div class="line">ENV usr=root pass=<span class="built_in">pwd</span></div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>FROM</p>
-</blockquote>
-<p>&#160;&#160; 顾名思义就是我们要构建的镜像的来源或者基础，语法是这样：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM &lt;image&gt;</div><div class="line"><span class="comment">#or </span></div><div class="line">FROM &lt;image&gt;:&lt;tag&gt;</div><div class="line"><span class="comment">#or</span></div><div class="line">FROM &lt;image&gt;@&lt;digest&gt;</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>RUN</p>
-</blockquote>
-<p>&#160;&#160; RUN 命令是制作镜像里面常用的命令，有两种写法<br> <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RUN &lt;<span class="built_in">command</span>&gt;</div><div class="line">RUN  [<span class="string">"executable"</span>, <span class="string">"param1"</span>，<span class="string">"param2"</span>]</div></pre></td></tr></table></figure></p>
-<p> <strong>tips</strong>: Dockerfile中的每一个指令都会在镜像上面新增一层中间层镜像，直至最外层镜像，所以执行RUN指令的时候，可以合并多个RUN 指令，最好不要一次性写多个,请看下面的操作<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># bad way</span></div><div class="line">RUN <span class="built_in">echo</span> hello </div><div class="line">RUN <span class="built_in">echo</span> docker</div><div class="line"><span class="comment"># good way</span></div><div class="line">RUN <span class="built_in">echo</span> hello \ </div><div class="line">  &amp;&amp; <span class="built_in">echo</span> docker</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>CMD </p>
-</blockquote>
-<p>&#160;&#160;Docker不是虚拟机，容器就是进程，如果是进程，进程启动的时候，就需要指定启动程序或者参数。 在Dockerfile里面只能有一个<code>CMD</code>,如果有多个的话，则只有最后一个CMD才会生效。<code>CMD</code>的主要目的为正在运行的容器提供一些默认的值或者行为。有三种形式（一般推荐exec 格式）：</p>
-<ul>
-<li>CMD [“executable”,”param1”,”param2”] (exec form, this is the preferred form)</li>
-<li>CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT)</li>
-<li>CMD command param1 param2 (shell form)</li>
-</ul>
-<p>&#160;&#160; <strong>tip</strong>: 第一种和第三种方式的命令，在docker run 的时候 后面可以执行其他命令，将这个命令给覆盖掉。比如我们Dockerfile是这样写的</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> ubuntu:latest</div><div class="line"><span class="keyword">CMD</span><span class="bash"> /bin/bash</span></div></pre></td></tr></table></figure>
-<p>&#160;&#160;或者</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> ubuntu:latest</div><div class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo <span class="variable">$HOME</span>"</span> ]</span></div></pre></td></tr></table></figure>
-<p>我们这样运行： <code>docker run -it --rm ubuntu:v4 cat /etc/os-release</code>, 后面的 <code>cat /etc/os-release</code>将默认的CMD命令给替换了,打印的结果长这样:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run -it --rm ubuntu:v4 cat /etc/os-release</div><div class="line">NAME=<span class="string">"Ubuntu"</span></div><div class="line">VERSION=<span class="string">"16.04.2 LTS (Xenial Xerus)"</span></div><div class="line">ID=ubuntu</div><div class="line">ID_LIKE=debian</div><div class="line">PRETTY_NAME=<span class="string">"Ubuntu 16.04.2 LTS"</span></div><div class="line">VERSION_ID=<span class="string">"16.04"</span></div><div class="line">HOME_URL=<span class="string">"http://www.ubuntu.com/"</span></div><div class="line">SUPPORT_URL=<span class="string">"http://help.ubuntu.com/"</span></div><div class="line">BUG_REPORT_URL=<span class="string">"http://bugs.launchpad.net/ubuntu/"</span></div><div class="line">VERSION_CODENAME=xenial</div><div class="line">UBUNTU_CODENAME=xenial</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>LABEL</p>
-</blockquote>
-<p>&#160;&#160; <code>LABEL</code>指令可以像镜像添加metadata元数据，和<code>ENV</code>一样是key-value的形式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LABEL <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> ...</div></pre></td></tr></table></figure>
-<p>&#160;&#160; <code>LABEL</code> 和 <code>RUN</code>指令一样，docker官方推荐将多个labels合并到一个单独的LABEL如果可能的话，每一条LABEL指令都会添加一个新的层，最后都会生成多个无效的中间层镜像，若存在多个同名的key，则最后一个会覆盖之前的key。</p>
-<blockquote>
-<p>EXPOSE</p>
-</blockquote>
-<p>&#160;&#160; 这个不是暴露端口，该指令告知Docker这个容器在运行的时候监听的那些端口。这并不会让HOST访问到容器的这些端口，如果你要达到这个目的，要使用-p参数，比如我们启动一个nginx:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run <span class="_">-d</span> -p 81:80 --name nginx-web nginx:latest</div></pre></td></tr></table></figure>
-<p>&#160;&#160; 这样就会暴露容器的80端口给host的81端口，可以直接localhost:81访问container的nginx服务。也可以不这样做，比如我们在Dockerfile里面声明了多个端口: 80 90 </p>
-<p>&#160;&#160; 在启动容器的时候这样写 docker run -d <code>-P</code> –name container-name image:tag 这样会自动将container的90 80端口暴露给host。我们可以通过docker ps  查看ports这一项。</p>
-<blockquote>
-<p>ENTRYPOINT</p>
-</blockquote>
-<p>&#160;&#160; 它和CMD 一样，都是指定容器的启动程序以及参数，但是和CMD 不同的是替换起来，要加一个参数 <code>--entrypoint</code></p>
-<p>&#160;&#160; 两种形式： </p>
-<ul>
-<li>ENTRYPOINT [“executable”, “param1”, “param2”] (exec form, preferred)</li>
-<li>ENTRYPOINT command param1 param2 (shell form)</li>
-</ul>
-<p>&#160;&#160; 通常是和 CMD 一起使用，请查看docker <a href="https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact" target="_blank" rel="external">官方介绍</a> </p>
-]]></content>
+    <content type="html"><![CDATA[<p>&#160;&#160; 今天我们来学习一下利用dockerfile 来构建镜像。<br><a id="more"></a><br>&#160;&#160; 我们知道 <code>docker comit</code> 命令也可以构建一个新的镜像，但是这个操作大部分情况下是不可控制的，这个操作对镜像的操作都是黑箱操作，除了制作镜像的人知道执行过什么命令，怎么生成的镜像，其他的人不知道。 而且： docker commit 这个操作，是在原有镜像的基础上，每执行一次命令，就会在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像。</p><p>&#160;&#160; 这样如果使用docker commit 制作镜像，以及后期修改的话，每一次修改都会让镜像更加臃肿一次。</p><p>&#160;&#160; 所以我们要使用dockerfile 来构建镜像, 按照<a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="external">官方文档</a>的解释，dockerfile是一个文本文件，这个文本文件包含了用户想聚合或者配置到镜像里面所需要的所有指令。</p><blockquote><p>怎么使用？</p></blockquote><p>&#160;&#160; 使用<code>docker build</code> 命令来构建镜像，但是这个命令需要一个Dockerfile文件 和  <em>上下文</em> （或者直接理解为一个目录的内容吧，po主自己加的）。 构建上下文指的是在本地路径 <code>PATH</code> 或者 <code>URL</code> 范围内的所有文件。 PATH 指的是本地文件系统， URL 特指Git 仓库地址。 </p><p>&#160;&#160; 当前目录是这样的，存在两个文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ls</span></div><div class="line">Dockerfile        Dockerfile.ubuntu</div></pre></td></tr></table></figure></p><p>&#160;&#160; 比如我们现在运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build .</div><div class="line"><span class="comment">#这个命令没有指定Dockerfile的位置，你可以使用docker build --help 查看</span></div><div class="line"><span class="comment">#缺省Dockerfile 是PATH/Dockerfile ./Dockerfile 是存在的这个文件的</span></div></pre></td></tr></table></figure></p><p>&#160;&#160; 它做了什么呢，执行构建的是Docker守护进程，而不是docker cli，做的第一件事就是将.(当前整个目录)的文件发给Docker daemon。 大部分情况下，应该将Dockerfile放到一个空的目录下面，最好只放一个Dockerfile文件。（警告： 当然不要使用根目录，如果将dockerfile放到根目录<code>/</code>，构建的时候，会将整个硬盘的所有内容copy一份到Docker daemon）。还好docker 有.dockerignore文件，类似.gitignore，此处省略多字，相信你能明白。</p><p>&#160;&#160; 当然我们也可以指定Dockerfile的路径</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build -f /path/<span class="keyword">in</span>/you/any/<span class="built_in">local</span>/filesystem/Dockerfile</div></pre></td></tr></table></figure><p>&#160;&#160; 可以构建不同tag的多个镜像，like this（本机测试）:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">docker</span> <span class="selector-tag">build</span> . <span class="selector-tag">-t</span> <span class="selector-tag">nginx</span><span class="selector-pseudo">:v333.01</span> <span class="selector-tag">-t</span> <span class="selector-tag">ngnix</span><span class="selector-pseudo">:v333.02</span></div></pre></td></tr></table></figure></p><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build . -t nginx:v333.01 -t ngnix:v333.02</div><div class="line">Sending build context to Docker daemon 3.072 kB</div><div class="line">Step 1/3 : FROM nginx</div><div class="line"> ---&gt; 958a7ae9e569</div><div class="line">Step 2/3 : CMD <span class="built_in">echo</span> <span class="variable">$HOME</span></div><div class="line"> ---&gt; Running <span class="keyword">in</span> 1ad7f1dd9964</div><div class="line"> ---&gt; 66e037162e28</div><div class="line">Removing intermediate container 1ad7f1dd9964</div><div class="line">Step 3/3 : RUN <span class="built_in">echo</span> <span class="string">'&lt;h1&gt; Hello. Docker ! second version &lt;/h1&gt;'</span> &gt; /usr/share/nginx/html/index.html &amp;&amp; <span class="built_in">echo</span> <span class="string">'what s going on'</span></div><div class="line"></div><div class="line">---&gt; Running <span class="keyword">in</span> 7ae3b76417c6</div><div class="line">what s going on</div><div class="line"> ---&gt; d4e9bdc765e4</div><div class="line">Removing intermediate container 7ae3b76417c6</div><div class="line">Successfully built d4e9bdc765e4</div></pre></td></tr></table></figure><p>&#160;&#160; 最终的结果：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">nginx               v333.01             d4e9bdc765e4        30 seconds ago      109 MB</div><div class="line">ngnix               v333.02             d4e9bdc765e4        30 seconds ago      109 MB</div></pre></td></tr></table></figure></p><hr><p>&#160;&#160; 我们来看 Dockerfile的格式。<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">INSTRUCTION arguments</span></div></pre></td></tr></table></figure></p><p>&#160;&#160; 这里的INSTRUCTION指令有多个关键字: <code>FROM</code>, <code>RUN</code>, <code>CMD</code>, <code>LABEL</code>, <code>EXPOSE</code>, <code>ENV</code>, <code>ADD</code>, <code>COPY</code>, <code>ENTRYPOINT</code>…</p><blockquote><p>ENV</p></blockquote><p>&#160;&#160; 我们先说ENV,env 大白话可以理解为环境变量。语法是这样：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ENV &lt;key&gt; &lt;value&gt;</div><div class="line">ENV &lt;key&gt; = &lt;value&gt;</div><div class="line"></div><div class="line"><span class="comment">#这样声明，这种声明方式只能声明单个变量</span></div><div class="line">ENV usr root</div><div class="line"><span class="comment">#这种声明方式可以声明多个环境变量</span></div><div class="line">ENV usr=root pass=<span class="built_in">pwd</span></div></pre></td></tr></table></figure></p><blockquote><p>FROM</p></blockquote><p>&#160;&#160; 顾名思义就是我们要构建的镜像的来源或者基础，语法是这样：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM &lt;image&gt;</div><div class="line"><span class="comment">#or </span></div><div class="line">FROM &lt;image&gt;:&lt;tag&gt;</div><div class="line"><span class="comment">#or</span></div><div class="line">FROM &lt;image&gt;@&lt;digest&gt;</div></pre></td></tr></table></figure></p><blockquote><p>RUN</p></blockquote><p>&#160;&#160; RUN 命令是制作镜像里面常用的命令，有两种写法<br> <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RUN &lt;<span class="built_in">command</span>&gt;</div><div class="line">RUN  [<span class="string">"executable"</span>, <span class="string">"param1"</span>，<span class="string">"param2"</span>]</div></pre></td></tr></table></figure></p><p> <strong>tips</strong>: Dockerfile中的每一个指令都会在镜像上面新增一层中间层镜像，直至最外层镜像，所以执行RUN指令的时候，可以合并多个RUN 指令，最好不要一次性写多个,请看下面的操作<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># bad way</span></div><div class="line">RUN <span class="built_in">echo</span> hello </div><div class="line">RUN <span class="built_in">echo</span> docker</div><div class="line"><span class="comment"># good way</span></div><div class="line">RUN <span class="built_in">echo</span> hello \ </div><div class="line">  &amp;&amp; <span class="built_in">echo</span> docker</div></pre></td></tr></table></figure></p><blockquote><p>CMD </p></blockquote><p>&#160;&#160;Docker不是虚拟机，容器就是进程，如果是进程，进程启动的时候，就需要指定启动程序或者参数。 在Dockerfile里面只能有一个<code>CMD</code>,如果有多个的话，则只有最后一个CMD才会生效。<code>CMD</code>的主要目的为正在运行的容器提供一些默认的值或者行为。有三种形式（一般推荐exec 格式）：</p><ul><li>CMD [“executable”,”param1”,”param2”] (exec form, this is the preferred form)</li><li>CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT)</li><li>CMD command param1 param2 (shell form)</li></ul><p>&#160;&#160; <strong>tip</strong>: 第一种和第三种方式的命令，在docker run 的时候 后面可以执行其他命令，将这个命令给覆盖掉。比如我们Dockerfile是这样写的</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> ubuntu:latest</div><div class="line"><span class="keyword">CMD</span><span class="bash"> /bin/bash</span></div></pre></td></tr></table></figure><p>&#160;&#160;或者</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> ubuntu:latest</div><div class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo <span class="variable">$HOME</span>"</span> ]</span></div></pre></td></tr></table></figure><p>我们这样运行： <code>docker run -it --rm ubuntu:v4 cat /etc/os-release</code>, 后面的 <code>cat /etc/os-release</code>将默认的CMD命令给替换了,打印的结果长这样:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run -it --rm ubuntu:v4 cat /etc/os-release</div><div class="line">NAME=<span class="string">"Ubuntu"</span></div><div class="line">VERSION=<span class="string">"16.04.2 LTS (Xenial Xerus)"</span></div><div class="line">ID=ubuntu</div><div class="line">ID_LIKE=debian</div><div class="line">PRETTY_NAME=<span class="string">"Ubuntu 16.04.2 LTS"</span></div><div class="line">VERSION_ID=<span class="string">"16.04"</span></div><div class="line">HOME_URL=<span class="string">"http://www.ubuntu.com/"</span></div><div class="line">SUPPORT_URL=<span class="string">"http://help.ubuntu.com/"</span></div><div class="line">BUG_REPORT_URL=<span class="string">"http://bugs.launchpad.net/ubuntu/"</span></div><div class="line">VERSION_CODENAME=xenial</div><div class="line">UBUNTU_CODENAME=xenial</div></pre></td></tr></table></figure></p><blockquote><p>LABEL</p></blockquote><p>&#160;&#160; <code>LABEL</code>指令可以像镜像添加metadata元数据，和<code>ENV</code>一样是key-value的形式</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LABEL <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> ...</div></pre></td></tr></table></figure><p>&#160;&#160; <code>LABEL</code> 和 <code>RUN</code>指令一样，docker官方推荐将多个labels合并到一个单独的LABEL如果可能的话，每一条LABEL指令都会添加一个新的层，最后都会生成多个无效的中间层镜像，若存在多个同名的key，则最后一个会覆盖之前的key。</p><blockquote><p>EXPOSE</p></blockquote><p>&#160;&#160; 这个不是暴露端口，该指令告知Docker这个容器在运行的时候监听的那些端口。这并不会让HOST访问到容器的这些端口，如果你要达到这个目的，要使用-p参数，比如我们启动一个nginx:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run -d -p 81:80 --name nginx-web nginx:latest</div></pre></td></tr></table></figure><p>&#160;&#160; 这样就会暴露容器的80端口给host的81端口，可以直接localhost:81访问container的nginx服务。也可以不这样做，比如我们在Dockerfile里面声明了多个端口: 80 90 </p><p>&#160;&#160; 在启动容器的时候这样写 docker run -d <code>-P</code> –name container-name image:tag 这样会自动将container的90 80端口暴露给host。我们可以通过docker ps  查看ports这一项。</p><blockquote><p>ENTRYPOINT</p></blockquote><p>&#160;&#160; 它和CMD 一样，都是指定容器的启动程序以及参数，但是和CMD 不同的是替换起来，要加一个参数 <code>--entrypoint</code></p><p>&#160;&#160; 两种形式： </p><ul><li>ENTRYPOINT [“executable”, “param1”, “param2”] (exec form, preferred)</li><li>ENTRYPOINT command param1 param2 (shell form)</li></ul><p>&#160;&#160; 通常是和 CMD 一起使用，请查看docker <a href="https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact" target="_blank" rel="external">官方介绍</a> </p>]]></content>
     
     <summary type="html">
     
@@ -114,14 +74,7 @@
     <published>2017-01-06T16:46:24.000Z</published>
     <updated>2017-05-16T15:39:04.000Z</updated>
     
-    <content type="html"><![CDATA[<p>做完俯卧撑口渴,烧了点开水喝，磨蹭到现在没有睡意，想到好久没有更新这个矫情的博客了，所以想到来一发，记录一下最近，小小的规划一下今年的目标，记得16年的目标没有跟工资相关，只想学一门技术，记得当时是想学ruby 可惜没有坚持下来。今年我的目标工资要涨，要学习python或者ruby··· 呵呵  ··或者··先这样定吧···<br><a id="more"></a></p>
-<p>16年下半年7月换工作了,大学同学介绍我进来的，在这个公司里面学到了很多东西，他们虽然不是专业的前端说实话作为专业的后端但是了解的前端方面还是很多，他们都是聪明的人学习起来很快，我也觉得在这个公司受益良多，自己尽力做到最好，中间有段时间除了上班 疯狂玩魔兽世界，后来觉得太浪费时间，卸载掉了。现在好了。 空的时间会学习一些新的东西，比如一个最简单的css 属性选择器，里面有很多我都只是一知半解 甚至不知道的，比如:not 。<br>最近的目标不说将webpack吃透至少要熟悉里面的机制，更直白一点插件什么的要知道在什么场合下使用，今天刚把ruanyf老师的教程给走完，看着简单，copy两下一下就搞定了，最开始前面的我都是copy 后面都是手写关键代码，发现手写和copy完全是两个概念，你会发现特别多的坑，真的是 copy得来终觉浅，绝知代码要手写。。</p>
-<p>后来慢慢的发现自己真的是很弱···各方面，想要达到的目标太远了····我真的特别想去google,可是顾影自怜是不行的，临渊羡鱼不如退而结网，争取今年多去牛客网刷点题。。</p>
-<p>有同学去微软工作了··羡慕得不行···</p>
-<p>自己得加油···不一定去的到··</p>
-<p>但是要努力才行</p>
-<p>你必须非常努力 才看起来毫不费力</p>
-]]></content>
+    <content type="html"><![CDATA[<p>做完俯卧撑口渴,烧了点开水喝，磨蹭到现在没有睡意，想到好久没有更新这个矫情的博客了，所以想到来一发，记录一下最近，小小的规划一下今年的目标，记得16年的目标没有跟工资相关，只想学一门技术，记得当时是想学ruby 可惜没有坚持下来。今年我的目标工资要涨，要学习python或者ruby··· 呵呵  ··或者··先这样定吧···<br><a id="more"></a></p><p>16年下半年7月换工作了,大学同学介绍我进来的，在这个公司里面学到了很多东西，他们虽然不是专业的前端说实话作为专业的后端但是了解的前端方面还是很多，他们都是聪明的人学习起来很快，我也觉得在这个公司受益良多，自己尽力做到最好，中间有段时间除了上班 疯狂玩魔兽世界，后来觉得太浪费时间，卸载掉了。现在好了。 空的时间会学习一些新的东西，比如一个最简单的css 属性选择器，里面有很多我都只是一知半解 甚至不知道的，比如:not 。<br>最近的目标不说将webpack吃透至少要熟悉里面的机制，更直白一点插件什么的要知道在什么场合下使用，今天刚把ruanyf老师的教程给走完，看着简单，copy两下一下就搞定了，最开始前面的我都是copy 后面都是手写关键代码，发现手写和copy完全是两个概念，你会发现特别多的坑，真的是 copy得来终觉浅，绝知代码要手写。。</p><p>后来慢慢的发现自己真的是很弱···各方面，想要达到的目标太远了····我真的特别想去google,可是顾影自怜是不行的，临渊羡鱼不如退而结网，争取今年多去牛客网刷点题。。</p><p>有同学去微软工作了··羡慕得不行···</p><p>自己得加油···不一定去的到··</p><p>但是要努力才行</p><p>你必须非常努力 才看起来毫不费力</p>]]></content>
     
     <summary type="html">
     
@@ -143,14 +96,7 @@
     <published>2016-02-18T14:45:57.000Z</published>
     <updated>2017-05-16T15:39:00.000Z</updated>
     
-    <content type="html"><![CDATA[<p>最近有点小小的堕落,加上好久没有跑步了,应该有两个月了吧,去跑了几圈。<br><a id="more"></a><br>安利一个mv  The Nights - Avicii</p>
-<embed src="http://player.youku.com/player.php/sid/XODUwODQxMjYw/v.swf" allowfullscreen="true" quality="high" width="670" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash">
-
-
-<p>Another good songs : </p>
-<p>&#160; &#160; &#160; &#160;      Farewell -Rihanna</p>
-<p>&#160; &#160; &#160; &#160;      Lighters -Bruno Mars &amp; ^%^&amp;%&amp;*^</p>
-]]></content>
+    <content type="html"><![CDATA[<p>最近有点小小的堕落,加上好久没有跑步了,应该有两个月了吧,去跑了几圈。<br><a id="more"></a><br>安利一个mv  The Nights - Avicii</p><embed src="http://player.youku.com/player.php/sid/XODUwODQxMjYw/v.swf" allowfullscreen="true" quality="high" width="670" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash"><p>Another good songs : </p><p>&#160; &#160; &#160; &#160;      Farewell -Rihanna</p><p>&#160; &#160; &#160; &#160;      Lighters -Bruno Mars &amp; ^%^&amp;%&amp;*^</p>]]></content>
     
     <summary type="html">
     
@@ -174,15 +120,7 @@
     <published>2016-02-17T12:59:32.000Z</published>
     <updated>2017-05-16T15:39:08.000Z</updated>
     
-    <content type="html"><![CDATA[<p> &#160; &#160; &#160; &#160; 1 控制情绪,比起发火,有其他100种更好的方式去解决问题,没人喜欢臭脸,家人同样如此,只是家人不会记住这些你的种种不好,其他人就不一定,甚至只会记住你的这些不好。<br>  <a id="more"></a><br>&#160; &#160; &#160; &#160; 2 笑脸相迎不一定是真的喜欢你,也许只是沟通需要,也许只是个人习惯,别误会;你在别人心中什么样子,只有别人知道,别臆断。残酷一点的话语就是：事情只有对双方有利的情况下才会发生,这种利可以是物质也可以是精神层面比如说精神层面的自我满足感,在道德的驱使下去做一件事也可以归咎于这种情况吧？。</p>
-<p>&#160; &#160; &#160; &#160;3 别碰不能碰的东西,有的东西经历过一次后,得记住,不要忘,大白话:别好了伤疤忘了疼,认真你就输了。</p>
-<p>&#160; &#160; &#160; &#160;4 别以为干我们这一行就不需要情商,大错特错,别犯蠢,蠢死算了。有的人沟通方式就是那么冲,理解一下别人,他并不是要和你起争执,怪他情商太低,有的人说话就是带刺,他并不是要攻击你,怪他说话不经过大脑,没错我他妈在说我自己。</p>
-<p>&#160; &#160; &#160; &#160;5 没有人不喜欢恭维的话,特定情况除外。</p>
-<p>&#160; &#160; &#160; &#160;6 懂的反击,过于善良就是软弱,软弱惯了就会当成习惯。觉得自己这就是善良,然而并不是,只是习惯了,坏的习惯挺可怕的。</p>
-<p>&#160; &#160; &#160; &#160;7 别感情用事,但是我他妈就喜欢感情用事,感性一点未必不好。</p>
-<p>You only live once.话虽如此,但是不应该太自私了。</p>
-<p>&#160; &#160; &#160; &#160;我本来想过着随便当个忍者，随便赚点钱。。。然后和不美又不丑的女人结婚生两个小孩，第一个是女孩，第二个是男孩。。。等长女儿结婚，儿子也能够独当一面的时候，就从忍者的工作退休。。。之后，每天过着下象棋或围棋的悠闲隐居生活。。。然后比自己的老婆还要早老死。。。我就是想过这种生活。。</p>
-<embed src="http://music.163.com/style/swf/widget.swf?sid=26191005&type=2&auto=1&width=278&height=32" width="298" height="52" allownetworking="all">]]></content>
+    <content type="html"><![CDATA[<p> &#160; &#160; &#160; &#160; 1 控制情绪,比起发火,有其他100种更好的方式去解决问题,没人喜欢臭脸,家人同样如此,只是家人不会记住这些你的种种不好,其他人就不一定,甚至只会记住你的这些不好。<br>  <a id="more"></a><br>&#160; &#160; &#160; &#160; 2 笑脸相迎不一定是真的喜欢你,也许只是沟通需要,也许只是个人习惯,别误会;你在别人心中什么样子,只有别人知道,别臆断。残酷一点的话语就是：事情只有对双方有利的情况下才会发生,这种利可以是物质也可以是精神层面比如说精神层面的自我满足感,在道德的驱使下去做一件事也可以归咎于这种情况吧？。</p><p>&#160; &#160; &#160; &#160;3 别碰不能碰的东西,有的东西经历过一次后,得记住,不要忘,大白话:别好了伤疤忘了疼,认真你就输了。</p><p>&#160; &#160; &#160; &#160;4 别以为干我们这一行就不需要情商,大错特错,别犯蠢,蠢死算了。有的人沟通方式就是那么冲,理解一下别人,他并不是要和你起争执,怪他情商太低,有的人说话就是带刺,他并不是要攻击你,怪他说话不经过大脑,没错我他妈在说我自己。</p><p>&#160; &#160; &#160; &#160;5 没有人不喜欢恭维的话,特定情况除外。</p><p>&#160; &#160; &#160; &#160;6 懂的反击,过于善良就是软弱,软弱惯了就会当成习惯。觉得自己这就是善良,然而并不是,只是习惯了,坏的习惯挺可怕的。</p><p>&#160; &#160; &#160; &#160;7 别感情用事,但是我他妈就喜欢感情用事,感性一点未必不好。</p><p>You only live once.话虽如此,但是不应该太自私了。</p><p>&#160; &#160; &#160; &#160;我本来想过着随便当个忍者，随便赚点钱。。。然后和不美又不丑的女人结婚生两个小孩，第一个是女孩，第二个是男孩。。。等长女儿结婚，儿子也能够独当一面的时候，就从忍者的工作退休。。。之后，每天过着下象棋或围棋的悠闲隐居生活。。。然后比自己的老婆还要早老死。。。我就是想过这种生活。。</p><embed src="http://music.163.com/style/swf/widget.swf?sid=26191005&type=2&auto=1&width=278&height=32" width="298" height="52" allownetworking="all">]]></content>
     
     <summary type="html">
     
@@ -206,24 +144,7 @@
     <published>2015-10-03T09:41:09.000Z</published>
     <updated>2017-05-16T15:38:52.000Z</updated>
     
-    <content type="html"><![CDATA[<p>9月30号早上请假，赶中午的火车去NJ参见Junv的Wedding。</p>
-<p>在火车上遇到了以前在学校别人给我打招呼我甚至都不会回应的同学(内向闷骚的性格作怪)，我主动向他们寒暄，以至于大家都能正常沟通，并没有什么难堪的事情发生，也许他们早已忘记，也许是我想太多，也许我意识到了人脉的重要，你不需要它，但是关键的时候你会需要，但是我不确定那一刻我的想法。<br><a id="more"></a><br>火车上聚集了7个曾经的同学和校友，难免聊到工作，现在大家貌似都很不错，貌似就我和二哥有点恼火，我不知道我这样主观的认为二哥工作有点恼火是对还是不对。</p>
-<p>他高中文科特别好，语文科代表，历史考过全级第五，段子什么的说得特别溜,如果你如我这般嘴拙，可以被他说的哑口无言，可你别就这样认为他只会说段子，大学专业荒废但是看了很多书。毕业那会儿我们都很迷茫，我说你就去take a training 还是搞本行业呢，至少前景不会太差，他只是说他不喜欢，我很佩服他，他没有妥协，直到现在，他不喜欢的他就不去干，他不妥协，依稀记得毕业的时候他也说过潘石屹的妻子如何白手起家什么类似的话，这段话我不太记得了，但是我肯定记得我是满口嘲讽的语气说：那样的概率应该也不会到你身上。类似这种语气吧。后来毕业了一段时间不知什么缘由聊过，只记得他说了一句: 我就是心灵鸡汤看多了….. 有点悲壮的感觉 ? 呃 </p>
-<p>但是我并不觉得他以后会是个loser,我们每一点积累也许都会在以后给予我们帮助。</p>
-<p>到了地点大家各找自己的roommate(标间里面两张床),留我一个人,当时只是说了一句：卧槽!    后来junv到了 说一个外国朋友来了 刚好和我凑成roommate。一个身材高大的黑人，我有点紧张，倒不是因为他是个foreigner，是因为我那拙劣的口语。沟通起来是没问题，但是我的发音用词真的是弱爆了，还好junv给他安装了一个有道词典，我不能理解的他就打字，这样也能继续进行下去，而二哥他们就开着类似bigger 这种玩笑,我也倒是觉得没什么，玩笑就是玩笑,大家开心就好。</p>
-<p>令我惊讶的是他说his major 不是软件,而是electronic … 省略号的意思就是我没听懂或者他没说,我也忘了,而且貌似他的学费都是自己挣的,他说他do sports to get pay.也就是橄榄球。瞬间觉得这小伙子不错嘛，不过他说他06年就高中毕业，然后转专业读了两个大学，才13年毕业认识Junv.<br>具体的情况我也不愿多问，因为我的表达能力实在是有限,当然这是2号早上的对话了。</p>
-<p>1号凌晨1点过才在各种困意的摧残下才睡着，即使那特别高的我最讨厌的枕头也不能阻止我入睡,他早上起的很早，起来熨衣服(后来才知道他是junv的伴郎),他没有开灯，动作很轻，我后来把灯开着了，我觉得他很有礼貌,也不知道在异国他乡对陌生人或者junv的朋友这样还是生活也是。</p>
-<p>我犹豫了很久最终爬起床了洗漱换了白色的衬衫，准备去接亲，我当时真想打自己，因为那一根京东上买的价值25块的皮带,真的是丑爆了，当时想的是 妈的回去买条正式点的皮带。裤子 和衣服过得去，鞋子虽然是昨年买的褪色严重的鞋子也可以将就,那根皮带让我浑身不自在。接亲过程中,二哥 gc 亮仔陆续赶到。在新娘家下面,等了至少40分钟,最后上去,走结婚的流程，家人为难，要红包，当然新娘漂亮的坐在沙发上,junv单膝跪地,大家让他说点什么，一开始只是说了特别几句简单的话,看得出来再junv老家的时候已经做过类似的，已经感动过自己了。但是新娘应了一句不行，大家大笑，再来，然后又是几句复杂的简单句子，没有特别华丽的辞藻，但是却让人动容。幸福都是相似的，我特别喜欢这句话,他们是幸福的。背着新娘下楼.回酒店。</p>
-<p>中午举行结婚典礼的时候，新娘在她父亲致辞的时和junv致辞的时候，哭的很厉害,用二哥的话说 touched 是的我们被touched.世上所有的美好都应该被祝福，当然他们的爱情更应该被祝福，这我们都能体会到的亲情同样是。</p>
-<p>婚礼完毕，下午和二哥他们去钓鱼,一个字形容: 爽。我们掉了差不多4斤鲫鱼。去找了家馆子加工，部分红烧，剩下的凉拌鲫鱼。点了花生鸭脑壳猪尾巴 喝酒 ，真的挺爽，我其实挺感谢屎二哥的,也许对他来说我只是一个人脉或者普通同学,但是呢我确实从他身上学到了很多东西，当然他也有我觉得不好的地方。</p>
-<p>晚上让我们去唱歌,包间略显拥挤,大家很嗨,新娘的弟娃儿唱歌很厉害，然而我觉得亮点是亮仔，唱歌很有摇滚范，声音很有特色唯一的不足就是总是慢半拍或者快半拍，但是大家丝毫没有吝啬掌声。我情商感人点了些伤感的歌,不好意思打断，最后要完的时候主人公说切切切，才意识到I’m an idiot，Absolutely.</p>
-<p>2号下午回成都,写下了这些文字。只是流水账的写，我想成为一个叙事高手所以，我得多写，然而也要多看书。我情商太低就是因为书看的太少。</p>
-<p>和优秀的人做朋友，你会看到不一样的风景，当然不是说交朋友得看人，毕竟其他人绝大部分可能有你身上没有的quality,这次回来我意识到自己还是太弱，各方面，在某一瞬间我想到了我的天空没有极限,我在内心暗自窃笑，是的，像个傻子一样，也许我就是个傻子。</p>
-<p>得看书，得学习，得成长，重要的是行胜于言。</p>
-<p>Actions speak louder than words.</p>
-<p>我计划每个月整理一下自己听的比较多的歌，我喜欢听歌：</p>
-<p>9月听的比较多的歌：<br> —— <a href="http://music.163.com/#/playlist?id=112642635" target="_blank"> [ 网易音乐]</a></p>
-]]></content>
+    <content type="html"><![CDATA[<p>9月30号早上请假，赶中午的火车去NJ参见Junv的Wedding。</p><p>在火车上遇到了以前在学校别人给我打招呼我甚至都不会回应的同学(内向闷骚的性格作怪)，我主动向他们寒暄，以至于大家都能正常沟通，并没有什么难堪的事情发生，也许他们早已忘记，也许是我想太多，也许我意识到了人脉的重要，你不需要它，但是关键的时候你会需要，但是我不确定那一刻我的想法。<br><a id="more"></a><br>火车上聚集了7个曾经的同学和校友，难免聊到工作，现在大家貌似都很不错，貌似就我和二哥有点恼火，我不知道我这样主观的认为二哥工作有点恼火是对还是不对。</p><p>他高中文科特别好，语文科代表，历史考过全级第五，段子什么的说得特别溜,如果你如我这般嘴拙，可以被他说的哑口无言，可你别就这样认为他只会说段子，大学专业荒废但是看了很多书。毕业那会儿我们都很迷茫，我说你就去take a training 还是搞本行业呢，至少前景不会太差，他只是说他不喜欢，我很佩服他，他没有妥协，直到现在，他不喜欢的他就不去干，他不妥协，依稀记得毕业的时候他也说过潘石屹的妻子如何白手起家什么类似的话，这段话我不太记得了，但是我肯定记得我是满口嘲讽的语气说：那样的概率应该也不会到你身上。类似这种语气吧。后来毕业了一段时间不知什么缘由聊过，只记得他说了一句: 我就是心灵鸡汤看多了….. 有点悲壮的感觉 ? 呃 </p><p>但是我并不觉得他以后会是个loser,我们每一点积累也许都会在以后给予我们帮助。</p><p>到了地点大家各找自己的roommate(标间里面两张床),留我一个人,当时只是说了一句：卧槽!    后来junv到了 说一个外国朋友来了 刚好和我凑成roommate。一个身材高大的黑人，我有点紧张，倒不是因为他是个foreigner，是因为我那拙劣的口语。沟通起来是没问题，但是我的发音用词真的是弱爆了，还好junv给他安装了一个有道词典，我不能理解的他就打字，这样也能继续进行下去，而二哥他们就开着类似bigger 这种玩笑,我也倒是觉得没什么，玩笑就是玩笑,大家开心就好。</p><p>令我惊讶的是他说his major 不是软件,而是electronic … 省略号的意思就是我没听懂或者他没说,我也忘了,而且貌似他的学费都是自己挣的,他说他do sports to get pay.也就是橄榄球。瞬间觉得这小伙子不错嘛，不过他说他06年就高中毕业，然后转专业读了两个大学，才13年毕业认识Junv.<br>具体的情况我也不愿多问，因为我的表达能力实在是有限,当然这是2号早上的对话了。</p><p>1号凌晨1点过才在各种困意的摧残下才睡着，即使那特别高的我最讨厌的枕头也不能阻止我入睡,他早上起的很早，起来熨衣服(后来才知道他是junv的伴郎),他没有开灯，动作很轻，我后来把灯开着了，我觉得他很有礼貌,也不知道在异国他乡对陌生人或者junv的朋友这样还是生活也是。</p><p>我犹豫了很久最终爬起床了洗漱换了白色的衬衫，准备去接亲，我当时真想打自己，因为那一根京东上买的价值25块的皮带,真的是丑爆了，当时想的是 妈的回去买条正式点的皮带。裤子 和衣服过得去，鞋子虽然是昨年买的褪色严重的鞋子也可以将就,那根皮带让我浑身不自在。接亲过程中,二哥 gc 亮仔陆续赶到。在新娘家下面,等了至少40分钟,最后上去,走结婚的流程，家人为难，要红包，当然新娘漂亮的坐在沙发上,junv单膝跪地,大家让他说点什么，一开始只是说了特别几句简单的话,看得出来再junv老家的时候已经做过类似的，已经感动过自己了。但是新娘应了一句不行，大家大笑，再来，然后又是几句复杂的简单句子，没有特别华丽的辞藻，但是却让人动容。幸福都是相似的，我特别喜欢这句话,他们是幸福的。背着新娘下楼.回酒店。</p><p>中午举行结婚典礼的时候，新娘在她父亲致辞的时和junv致辞的时候，哭的很厉害,用二哥的话说 touched 是的我们被touched.世上所有的美好都应该被祝福，当然他们的爱情更应该被祝福，这我们都能体会到的亲情同样是。</p><p>婚礼完毕，下午和二哥他们去钓鱼,一个字形容: 爽。我们掉了差不多4斤鲫鱼。去找了家馆子加工，部分红烧，剩下的凉拌鲫鱼。点了花生鸭脑壳猪尾巴 喝酒 ，真的挺爽，我其实挺感谢屎二哥的,也许对他来说我只是一个人脉或者普通同学,但是呢我确实从他身上学到了很多东西，当然他也有我觉得不好的地方。</p><p>晚上让我们去唱歌,包间略显拥挤,大家很嗨,新娘的弟娃儿唱歌很厉害，然而我觉得亮点是亮仔，唱歌很有摇滚范，声音很有特色唯一的不足就是总是慢半拍或者快半拍，但是大家丝毫没有吝啬掌声。我情商感人点了些伤感的歌,不好意思打断，最后要完的时候主人公说切切切，才意识到I’m an idiot，Absolutely.</p><p>2号下午回成都,写下了这些文字。只是流水账的写，我想成为一个叙事高手所以，我得多写，然而也要多看书。我情商太低就是因为书看的太少。</p><p>和优秀的人做朋友，你会看到不一样的风景，当然不是说交朋友得看人，毕竟其他人绝大部分可能有你身上没有的quality,这次回来我意识到自己还是太弱，各方面，在某一瞬间我想到了我的天空没有极限,我在内心暗自窃笑，是的，像个傻子一样，也许我就是个傻子。</p><p>得看书，得学习，得成长，重要的是行胜于言。</p><p>Actions speak louder than words.</p><p>我计划每个月整理一下自己听的比较多的歌，我喜欢听歌：</p><p>9月听的比较多的歌：<br> —— <a href="http://music.163.com/#/playlist?id=112642635" target="_blank"> [ 网易音乐]</a></p>]]></content>
     
     <summary type="html">
     
@@ -248,17 +169,14 @@
     <published>2015-09-21T13:23:24.000Z</published>
     <updated>2015-09-21T14:39:52.000Z</updated>
     
-    <content type="html"><![CDATA[<p>&#160; &#160; &#160; &#160;8月底开始搞这个hexo静态博客,准确的说14年7月份就想搭建自己的博客,然而定的目标太多，各种瞎搞没有实现。今年年初我尝试过Ghost,其实Ghost后台管理博文的方式比Hexo更加人性化。当时觉得ghost太简单了 (现在看来真是图样图森破,把简单的事情做到极致就会达到卓越？)。<br>&#160; &#160; &#160; &#160;虽然本博客简陋无比，但是我也是努力去改样式到现在这个鬼样子,最开始使用的landscape主题hexo的默认主题,改了几天后发现markdown语法里面引用在这个主题下不起作用，于是乎换成了landscape plus发现引用语法是有效果的，然而列表不起作用了,so whatever.I accept it。由于最近公司极度动荡,可能要去找下一份工作了，于是乎不想再去折腾这个了。暂时就这样吧。以后有时间再倒腾倒腾。</p>
-<p>&#160; &#160; &#160; &#160;<strong>今天的感悟：</strong></p>
-<blockquote>
-<p>你所犯下的错误.并不是你诚心悔过别人就一定会原谅你.</p>
-</blockquote>
-<p>今天被田Hebe的这首歌洗脑了,但是主歌比副歌好听：<br>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=28018075&auto=0&height=66"></iframe><br>有点困,发到github上就睡了.</p>
-]]></content>
+    <content type="html"><![CDATA[<p>&#160; &#160; &#160; &#160;8月底开始搞这个hexo静态博客,准确的说14年7月份就想搭建自己的博客,然而定的目标太多，各种瞎搞没有实现。今年年初我尝试过Ghost,其实Ghost后台管理博文的方式比Hexo更加人性化。当时觉得ghost太简单了 (现在看来真是图样图森破,把简单的事情做到极致就会达到卓越？)。<br>&#160; &#160; &#160; &#160;虽然本博客简陋无比，但是我也是努力去改样式到现在这个鬼样子,最开始使用的landscape主题hexo的默认主题,改了几天后发现markdown语法里面引用在这个主题下不起作用，于是乎换成了landscape plus发现引用语法是有效果的，然而列表不起作用了,so whatever.I accept it。由于最近公司极度动荡,可能要去找下一份工作了，于是乎不想再去折腾这个了。暂时就这样吧。以后有时间再倒腾倒腾。</p><p>&#160; &#160; &#160; &#160;<strong>今天的感悟：</strong></p><blockquote><p>你所犯下的错误.并不是你诚心悔过别人就一定会原谅你.</p></blockquote><p>今天被田Hebe的这首歌洗脑了,但是主歌比副歌好听：<br>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=28018075&auto=0&height=66"></iframe><br>有点困,发到github上就睡了.</p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;8月底开始搞这个hexo静态博客,准确的说14年7月份就想搭建自己的博客,然而定的目标太多，各种瞎搞没有实现。今年年初我尝试过Ghost,其实Ghost后台管理博文的方式比Hexo更加人性化。当时觉得ghost太简单了 
+      
+      
+        &lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;8月底开始搞这个hexo静态博客,准确的说14年7月份就想搭建自己的博客,然而定的目标太多，各种瞎搞没有实现。今年年初我尝试过Ghost,其实Ghost后台管理博文的方式比Hexo更加人性化。当时觉得ghost太简单了 
+      
     
     </summary>
     
@@ -276,16 +194,7 @@
     <published>2015-09-05T13:23:24.000Z</published>
     <updated>2017-05-16T15:39:12.000Z</updated>
     
-    <content type="html"><![CDATA[<p> &#160; &#160; &#160; &#160;最近失去了些东西，有点难以释怀，我相信只是时间问题，只是最近有点让人头疼…..真的很头疼…..</p>
-<a id="more"></a>
-<p> &#160; &#160; &#160; &#160; 曾经我以为自己和别人不一样，有赤子之心，拥有真善美这些优秀的品质,可近些日子以来我发现我只是一个凡人，我眼中的厌恶的也有我自己的影子，我只是从来都没有想过曾经自己的经历，我就是我眼中所厌烦的那种人，失去的东西让我惊醒，我就是一个普通的烂人而已，口口声声的对世间的邪恶说着我独树一帜我是光明使者类似的屁话，实际上我内心也有他们，只是我被蒙蔽了，我自己都没有发觉，甚至我就是他们中的一员。</p>
-<p> &#160; &#160; &#160; &#160;经历了这两段波折，我也稍微明白了自己是个怎么样的人，自己想要的是什么，某些时候该做什么，某些时候不该做什么。当然只是稍微，人性的未知也许超出想象，希望自己能够稍微活明白一点，只是稍微明白一点，屎二哥说过 人啊 一辈子活明白就行了，但是有几个活明白了的，哦，对，好像有一个….我认为他也许就是，但是正是这种我认为给了我枷锁，我以为，我认为，这种屁话并没有什么卵用，在真实面前也许 这几个字是对的..但是大部分的时候却不如我们所认知的那样。</p>
-<p> &#160; &#160; &#160; &#160;所以我们能做的仅仅是平静一点，别用你的上帝视角去定义别人，我们能定义的只有我们自己，所以当真相来临的时候你也不必那么慌乱，因为你不会理所当然的认为它会按照你的想象去走，它只是发生了而已。而你还是要过自己的生活，所以看开点，看开点，看开点……</p>
-<p> &#160; &#160; &#160; &#160;life gose on.</p>
-<p> &#160; &#160; &#160; &#160;特别喜欢张悬的这首歌,前段时间偶然看到自己的飞信签名是里面的歌词: <em>你拥抱的并不总是拥抱你</em></p>
-<embed src="http://music.163.com/style/swf/widget.swf?sid=326705&type=2&auto=0&width=320&height=66" width="340" height="86" allownetworking="all">
-
-]]></content>
+    <content type="html"><![CDATA[<p> &#160; &#160; &#160; &#160;最近失去了些东西，有点难以释怀，我相信只是时间问题，只是最近有点让人头疼…..真的很头疼…..</p><a id="more"></a><p> &#160; &#160; &#160; &#160; 曾经我以为自己和别人不一样，有赤子之心，拥有真善美这些优秀的品质,可近些日子以来我发现我只是一个凡人，我眼中的厌恶的也有我自己的影子，我只是从来都没有想过曾经自己的经历，我就是我眼中所厌烦的那种人，失去的东西让我惊醒，我就是一个普通的烂人而已，口口声声的对世间的邪恶说着我独树一帜我是光明使者类似的屁话，实际上我内心也有他们，只是我被蒙蔽了，我自己都没有发觉，甚至我就是他们中的一员。</p><p> &#160; &#160; &#160; &#160;经历了这两段波折，我也稍微明白了自己是个怎么样的人，自己想要的是什么，某些时候该做什么，某些时候不该做什么。当然只是稍微，人性的未知也许超出想象，希望自己能够稍微活明白一点，只是稍微明白一点，屎二哥说过 人啊 一辈子活明白就行了，但是有几个活明白了的，哦，对，好像有一个….我认为他也许就是，但是正是这种我认为给了我枷锁，我以为，我认为，这种屁话并没有什么卵用，在真实面前也许 这几个字是对的..但是大部分的时候却不如我们所认知的那样。</p><p> &#160; &#160; &#160; &#160;所以我们能做的仅仅是平静一点，别用你的上帝视角去定义别人，我们能定义的只有我们自己，所以当真相来临的时候你也不必那么慌乱，因为你不会理所当然的认为它会按照你的想象去走，它只是发生了而已。而你还是要过自己的生活，所以看开点，看开点，看开点……</p><p> &#160; &#160; &#160; &#160;life gose on.</p><p> &#160; &#160; &#160; &#160;特别喜欢张悬的这首歌,前段时间偶然看到自己的飞信签名是里面的歌词: <em>你拥抱的并不总是拥抱你</em></p><embed src="http://music.163.com/style/swf/widget.swf?sid=326705&type=2&auto=0&width=320&height=66" width="340" height="86" allownetworking="all">]]></content>
     
     <summary type="html">
     
@@ -307,39 +216,7 @@
     <published>2013-09-15T13:23:24.000Z</published>
     <updated>2017-05-16T15:39:14.000Z</updated>
     
-    <content type="html"><![CDATA[<p>  &#160; &#160; &#160; &#160;这是我13年存的文档,现在已经找不到出处了。若前辈您发现这是您写的,请及时联系我</p>
-<blockquote>
-<p>&#160; &#160; &#160; &#160;展望未来，总结过去10年的程序员生涯，给程序员小弟弟小妹妹们的一些总结性忠告<br>走过的路，回忆起来是那么曲折，把自己的一些心得体会分享给程序员兄弟姐妹们，虽然时代在变化，但是很可能你也会走我已经做过的10年的路程，有些心得体会你可以借鉴一下，觉得说得有道理的你就接纳，觉得说得没道理的，你就抛弃，以下是我发自内心的，给大家的忠告，特别是针对那些小弟弟妹妹们。<br><a id="more"></a></p>
-</blockquote>
-<ol>
-<li><p>自己的户口档案、养老保险、医疗保险、住房公积金一定要保管好。<br>由于程序员行业每年跳槽一次，我不隐瞒大家，我至少换过5个以上的单位，这期间跳来跳去，甚至是城市都换过3个。还好户口没丢掉，其他都已经是乱了，好几个城市里，都有交过三金，甚至是一个程序的2个区里交的都有，那些东西，10年后，会变得很重要。你买房子若有公积金，可以取出来，贷款利率也会比较低一些，有孩子了，还需要上学，生病了还需要医疗保险。<br>特别是买房子时，你要商业贷款与公积金贷款的利率差别还是很大，有可能会有10万的差距。你平时都注意这些，会给你带来的损失会最小，例如每个月缴纳300元的公积金，公司也缴纳300元，你一个月能存下来600元，一年就是7200元，10年就是72000元。我以前都忽视了这些，到我需要买房子时，公积金里可能只有几千元，10年很快就过去了，结果我没能存下来多少公积金，医疗保险，养老金等更别提了，都已经稀里糊涂了，这些损失10年累加起来，是很庞大的数字，大家要注意，跳槽换工作时也要保护好自身的利益，现在房价很贵，你可能是跟我一样，大山里出来打拼的娃子，家里也没有丰厚的积蓄，只有靠自己拼搏，买房子是人生的一件大事，等你到了10年，才想到这个事情，已经晚了，特别是孩子要上学，上幼儿园等，需要户口啥的都要齐全。</p>
-</li>
-<li><p>不要轻易换笔记本电脑，不要跟潮流，不要买过多的电子产品，不要过于频繁的更换手机。<br>这方面我的经验教训也是惨痛的。我大概前后购买过5-6个笔记本，以前的都是1万多元一台，最近买的是一台是1万多给女朋友的，自己买了一台是7500元左右，手机大概换过接近10个了，这些钱加起来也足够有10万以上了，你可能一不小心就购买了这些电子产品，但是时间长了，你一回过头来想想，你为什么赚得也不少，但是为什么还是那么穷，是因为你购买这些电子产品花费了过多的金钱了，平时笔记本啥的贵重物品要保护好，我一个同事不小心丢了2台笔记本电脑，接近2万的损失啊，你净赚2万，不是那么容易的，这个窟窿不是开玩笑的，我曾经也被人偷了一个崭新的笔记本，损失1.5万左右，更糟糕的是最新的代码也丢被偷了。</p>
-</li>
-<li><p>这年代外语、学历、职称、驾驶证还是蛮重要的。<br>想找高薪，外资企业是正确的选择，在同样的打工里，外资企业的收入普遍是高的，我就想不明白，我们的赚钱能力怎么就比不过人家了，社会不断发展，将来可能去外国就像串门一样了，也说不定的，外语好将来的就业机会也会更多更广一些。<br>学历并不代表啥，但是学历也是敲门砖，例如有300个应聘者，那至少重点本科以下的，统统不看了，因为实在是来不及看了，你再厉害也被挡在机会的门外了，同样有时候你想改行什么的，职称也很重要，最起码评个中级职称，说不定还有机会能进入大学或者政府部门还是有可能性。<br>若有充裕的时间，应该把驾驶证考了，因为你越到后面越忙与工作家庭，没机会学车了也说不定的，平时也别光顾拼命工作，工作10年后你才发现，原来身边的人都至少硕士学历了，你被社会自动淘汰了，我现在就有这个感觉，虽然我带过很多硕士，他们的就业机会比我还好，经常能进入名牌企业，我也一直进不去。</p>
-</li>
-<li><p>不要谈过多的女朋友，谈女朋友要看准，下手要稳准狠。<br>我谈过2个女朋友，平均每个女朋友身上的开支前后大概会有10万左右，还好我不用谈第3个女朋友了，若投资失误，那也是很残忍的，谈女朋友也会消耗很多时间精力、还会消耗很多金钱，实话的讲的确是这样的，人家女孩子也值钱啊，凭什么就那么轻易的跟你啊，我跟第一个朋友分手时，我的生活至少是倒退了3-4年，一切从零开始，一切从头开始，我劝大家谈女朋友是人生最大的一笔买卖，投资失误会有惨痛的后果，不仅仅是金钱上的损失，更会有精神、心灵上的沉重打击，大家要学会珍惜女朋友，要学会哄好女朋友，让老婆开心每一天，虽然鱼儿上钩了，不用再下鱼饵了，偶尔也别忘记放点米，这个鱼要是脱钩了，那不是开玩笑的。</p>
-</li>
-<li><p>工作不要更换得太过于频繁，选好了行业方向最好别更换太频繁。<br>换工作，换行业方向，就像熊掰苞米一样的道理，有时候是丢了芝麻捡西瓜，有时候是丢了西瓜捡芝麻，这个道理我就不多讲了，大家都应该能明白的。</p>
-</li>
-<li><p>要对身边的人好，要得到老板的信任、同事的认可及支持、珍惜良好的工作环境。<br>有个朋友的QQ名字很有意思，“只爱陌生人”，陌生人是很有意思，但是最关键时刻，还是需要靠非陌生人，你每天跟同事一起生活，要维系好身边的人。你的成功与失败，往往是你身边的30-40个人决定的。你就是世界首富，他身边也是那么不超过100个人的在左右着他的生活，当你工作10年了，没一个老板信任你，没几个要好的同事朋友，那你惨了，你在这个世界上已经是很孤单了，你的收入，其实大多是来自这些身边的朋友给你介绍的生意，不大会网上掉几个馅饼的。<br>现在你身边的人有可能在不久的将来，给你提供很多好机会。</p>
-</li>
-<li><p>钱很重要，但是生活质量比钱还重要，工作是很重要，但是家人比工作还重要。<br>钱不是万能的，但是没钱是万万不能的。钱赚了，身体夸了，全送给医院了，钱赚了，身心疲惫了，人活着为了啥？不就为了开开心心生活嘛？工作重要，但是失去了家人的爱，失去了女朋友，失去了老婆孩子，那这个工作有啥用了？工作很容易就换了，家人是换不了的，老婆不是想换就换的，孩子不是想换就换的，连自己的家庭都不负责的人，怎么可能对公司负责呢？我一直是这个观念，来面试时觉得工作更重要的，我们一般不录取的，那太假了，或者太不懂事了。</p>
-</li>
-<li><p>工作累了，也别太贪玩，有时候还是需要多想想如何才能赚钱。<br>时间一晃就过去了，工作累了是可以适当放松，但是别太贪玩，10年很容易就过去了，10年后你要买房子，要娶老婆，要买车子，要生娃娃，身体也会变得脆弱一些，需要良好的生活习惯，也经不起通宵了，通宵一次，你要低迷好几天才能缓过劲儿来，跟20刚出头完全不一样了，用钱的地方多了去了，父母也会变得更老一些，可能也需要你的照顾，整个家子都指望你赚钱，别到了这个时候，你才意识到赚钱是那么的重要，更何况现在城市的房价，动不动就是100万，加上按揭的利息，你很可能需要支付150万。还可能需要装修，买车子。可能你身上的压力是200万。别觉得谈钱就俗，你要学会赚钱，要有个需要赚钱的良好意识，当然你出身富裕家庭，就不用考虑这些因素了。</p>
-</li>
-<li><p>每天一点点进步，每月一点点积累，要敬业要爱业，我们给别人提供的也是服务。<br>总有一天，你也会有累的时候，你也会有老的时候，这时候，你要靠啥呢？就要靠你平时的积累，你10年的积累，可以打倒很多竞争对手，他们再厉害，再怎么样，也很难抵得过你10年的积累，特别是后面5-10年的积累，成果会很明显，前面的1-5年，算是做软件的入门吧，除非你有高人指点，那可能2-3年就可以修成正果，软件在将来还是会值钱的，以为生活会越来越智能化，越来越数字化，软件的需求还是很有前途，最起码未来的10-20年里不用太担心失业问题了。</p>
-</li>
-<li><p>对程序员来讲，开发思想、架构、代码就是财富，别老丢弃你的劳动成果，要学会保护你的劳动成果。<br>我大概7-8年前的代码都在手上，经常改进来改进去，维护来维护去，在一定的程度上，让我生活轻松了不少，因为我不用什么都从头来过，我只要痛苦一次，以后就要反复重复利用，软件的价值在于重复利用，而不是每个东西，都从头开发，那永远也是辛苦的程序员，这个生活质量就别提了，不管自己的代码丑还是拿不出手，要学会精心维护，每天改进一点点，每个月一个小进步，每年一个大进步，多年的积累是宝贵的，这个早晚也会给你带来丰厚的收益。</p>
-</li>
-<li><p>当程序员要防止原地踏步，不是工作年限长了，经验就丰富了，能力就强了，年纪越大工作越难找。<br>我有一个朋友跟我开玩笑，工作5年的人，可能能力差距会很大，为什么呢？因为第一年他们干的事情都是一样的，都写程序了，2个人可能由于价值观不一样，5年后差距会很大，甚至是大到无法追赶的程度，为啥？因为还有机会的因素在里面，有的人干了5年，还是在原地踏步，天天只会写那些添加、删除、修改的代码。那你得注意了，需要不断的提高自己，才是硬道理。例如你会SQLServer，那要试着学习Oracle， 你是做C/S的，那得需要提高到B/S的，你是做单机软件的，那得需要提高到网络软件，你只关注自己的工作的，需要学会管理，关心他人的工作。你是当程序员的，要试着提高当项目经理、部门经理，公司的总监等等，人有野心有目标才会不断进步，最俗的为了多赚钱，提高工作职位工作岗位，工作单位，也是可以理解的。<br>年纪越大工作越难找，例如3-4千的工作是随便找找，玩一样，但是你30过后，最起码要找月薪上1万的工作，这样的工作是机会也少，一般小公司也给不起，还得找个好公司才可以，好公司又不是天天招聘人，天天缺好的工作岗位，说不好听点儿，小公司的老板才赚多少啊？他来钱也很不容易的，小池塘就不好容得下大鲨鱼了。</p>
-</li>
-<li><p>当创业的收入比打工还少时，那就别创业，要找比自己能力强的人创业，你不会吃亏。<br>创业的收入，比打工还少，那就是瞎扯蛋，恶搞。创业的真正意思并不是要你去吃苦没钱赚，那是忽悠无知的人的。当你创业时的收入，比打工还多，那你可以考虑创业，没有工资什么的，股份啥的，都是瞎扯蛋。<br>不要跟自己能力还弱的人一起创业，那损失最大的，很可能就是你，要创业，也要找比自己强的人一起创业，最起码赚不到钱，还能学到不少。不会有过多的损失。别热血一沸腾就创业了，创业了，也别烧自己的钱，家人的钱，那是很不抗烧的，没几下几十万就烧干了。<br>其实打工，也是创业的开始，每个月都能拿到钱，还可以学到知识，什么公司的股份都是空话，没几个小公司能成功，开起来了也走不了3年就分家了，都忽悠小孩子玩的，除非真的有科技含量或者是客户资源的，否则股份是一文钱不值的，就算创业每个月也按时拿工资才是硬道理。</p>
-</li>
-<li><p>未来的生活节奏会更快，生活压力会更大，竞争会更激烈，社会服务体系会更完善。<br>在未来，我们享受良好的服务的同时，也会为别人提供更良好的服务，需要在技能上还是服务质量上的要求会更高更严格。平时要注意提高自己，不要被时代淘汰掉，我从小的朋友，一波又一波被社会无情的淘汰了，很小的时候，我出生在大草原与大山的交界处，我小时候的玩伴，还在大山里，我跟着家人杀出来了，我小学、中学、大学、工作上的、这10年，我一直很坚强的拼搏下来，很不容易的在杭州立住脚了，说实话，参加工作后的十年，也是不断拼搏，不断提高的十年。</p>
-</li>
-</ol>
-]]></content>
+    <content type="html"><![CDATA[<p>  &#160; &#160; &#160; &#160;这是我13年存的文档,现在已经找不到出处了。若前辈您发现这是您写的,请及时联系我</p><blockquote><p>&#160; &#160; &#160; &#160;展望未来，总结过去10年的程序员生涯，给程序员小弟弟小妹妹们的一些总结性忠告<br>走过的路，回忆起来是那么曲折，把自己的一些心得体会分享给程序员兄弟姐妹们，虽然时代在变化，但是很可能你也会走我已经做过的10年的路程，有些心得体会你可以借鉴一下，觉得说得有道理的你就接纳，觉得说得没道理的，你就抛弃，以下是我发自内心的，给大家的忠告，特别是针对那些小弟弟妹妹们。<br><a id="more"></a></p></blockquote><ol><li><p>自己的户口档案、养老保险、医疗保险、住房公积金一定要保管好。<br>由于程序员行业每年跳槽一次，我不隐瞒大家，我至少换过5个以上的单位，这期间跳来跳去，甚至是城市都换过3个。还好户口没丢掉，其他都已经是乱了，好几个城市里，都有交过三金，甚至是一个程序的2个区里交的都有，那些东西，10年后，会变得很重要。你买房子若有公积金，可以取出来，贷款利率也会比较低一些，有孩子了，还需要上学，生病了还需要医疗保险。<br>特别是买房子时，你要商业贷款与公积金贷款的利率差别还是很大，有可能会有10万的差距。你平时都注意这些，会给你带来的损失会最小，例如每个月缴纳300元的公积金，公司也缴纳300元，你一个月能存下来600元，一年就是7200元，10年就是72000元。我以前都忽视了这些，到我需要买房子时，公积金里可能只有几千元，10年很快就过去了，结果我没能存下来多少公积金，医疗保险，养老金等更别提了，都已经稀里糊涂了，这些损失10年累加起来，是很庞大的数字，大家要注意，跳槽换工作时也要保护好自身的利益，现在房价很贵，你可能是跟我一样，大山里出来打拼的娃子，家里也没有丰厚的积蓄，只有靠自己拼搏，买房子是人生的一件大事，等你到了10年，才想到这个事情，已经晚了，特别是孩子要上学，上幼儿园等，需要户口啥的都要齐全。</p></li><li><p>不要轻易换笔记本电脑，不要跟潮流，不要买过多的电子产品，不要过于频繁的更换手机。<br>这方面我的经验教训也是惨痛的。我大概前后购买过5-6个笔记本，以前的都是1万多元一台，最近买的是一台是1万多给女朋友的，自己买了一台是7500元左右，手机大概换过接近10个了，这些钱加起来也足够有10万以上了，你可能一不小心就购买了这些电子产品，但是时间长了，你一回过头来想想，你为什么赚得也不少，但是为什么还是那么穷，是因为你购买这些电子产品花费了过多的金钱了，平时笔记本啥的贵重物品要保护好，我一个同事不小心丢了2台笔记本电脑，接近2万的损失啊，你净赚2万，不是那么容易的，这个窟窿不是开玩笑的，我曾经也被人偷了一个崭新的笔记本，损失1.5万左右，更糟糕的是最新的代码也丢被偷了。</p></li><li><p>这年代外语、学历、职称、驾驶证还是蛮重要的。<br>想找高薪，外资企业是正确的选择，在同样的打工里，外资企业的收入普遍是高的，我就想不明白，我们的赚钱能力怎么就比不过人家了，社会不断发展，将来可能去外国就像串门一样了，也说不定的，外语好将来的就业机会也会更多更广一些。<br>学历并不代表啥，但是学历也是敲门砖，例如有300个应聘者，那至少重点本科以下的，统统不看了，因为实在是来不及看了，你再厉害也被挡在机会的门外了，同样有时候你想改行什么的，职称也很重要，最起码评个中级职称，说不定还有机会能进入大学或者政府部门还是有可能性。<br>若有充裕的时间，应该把驾驶证考了，因为你越到后面越忙与工作家庭，没机会学车了也说不定的，平时也别光顾拼命工作，工作10年后你才发现，原来身边的人都至少硕士学历了，你被社会自动淘汰了，我现在就有这个感觉，虽然我带过很多硕士，他们的就业机会比我还好，经常能进入名牌企业，我也一直进不去。</p></li><li><p>不要谈过多的女朋友，谈女朋友要看准，下手要稳准狠。<br>我谈过2个女朋友，平均每个女朋友身上的开支前后大概会有10万左右，还好我不用谈第3个女朋友了，若投资失误，那也是很残忍的，谈女朋友也会消耗很多时间精力、还会消耗很多金钱，实话的讲的确是这样的，人家女孩子也值钱啊，凭什么就那么轻易的跟你啊，我跟第一个朋友分手时，我的生活至少是倒退了3-4年，一切从零开始，一切从头开始，我劝大家谈女朋友是人生最大的一笔买卖，投资失误会有惨痛的后果，不仅仅是金钱上的损失，更会有精神、心灵上的沉重打击，大家要学会珍惜女朋友，要学会哄好女朋友，让老婆开心每一天，虽然鱼儿上钩了，不用再下鱼饵了，偶尔也别忘记放点米，这个鱼要是脱钩了，那不是开玩笑的。</p></li><li><p>工作不要更换得太过于频繁，选好了行业方向最好别更换太频繁。<br>换工作，换行业方向，就像熊掰苞米一样的道理，有时候是丢了芝麻捡西瓜，有时候是丢了西瓜捡芝麻，这个道理我就不多讲了，大家都应该能明白的。</p></li><li><p>要对身边的人好，要得到老板的信任、同事的认可及支持、珍惜良好的工作环境。<br>有个朋友的QQ名字很有意思，“只爱陌生人”，陌生人是很有意思，但是最关键时刻，还是需要靠非陌生人，你每天跟同事一起生活，要维系好身边的人。你的成功与失败，往往是你身边的30-40个人决定的。你就是世界首富，他身边也是那么不超过100个人的在左右着他的生活，当你工作10年了，没一个老板信任你，没几个要好的同事朋友，那你惨了，你在这个世界上已经是很孤单了，你的收入，其实大多是来自这些身边的朋友给你介绍的生意，不大会网上掉几个馅饼的。<br>现在你身边的人有可能在不久的将来，给你提供很多好机会。</p></li><li><p>钱很重要，但是生活质量比钱还重要，工作是很重要，但是家人比工作还重要。<br>钱不是万能的，但是没钱是万万不能的。钱赚了，身体夸了，全送给医院了，钱赚了，身心疲惫了，人活着为了啥？不就为了开开心心生活嘛？工作重要，但是失去了家人的爱，失去了女朋友，失去了老婆孩子，那这个工作有啥用了？工作很容易就换了，家人是换不了的，老婆不是想换就换的，孩子不是想换就换的，连自己的家庭都不负责的人，怎么可能对公司负责呢？我一直是这个观念，来面试时觉得工作更重要的，我们一般不录取的，那太假了，或者太不懂事了。</p></li><li><p>工作累了，也别太贪玩，有时候还是需要多想想如何才能赚钱。<br>时间一晃就过去了，工作累了是可以适当放松，但是别太贪玩，10年很容易就过去了，10年后你要买房子，要娶老婆，要买车子，要生娃娃，身体也会变得脆弱一些，需要良好的生活习惯，也经不起通宵了，通宵一次，你要低迷好几天才能缓过劲儿来，跟20刚出头完全不一样了，用钱的地方多了去了，父母也会变得更老一些，可能也需要你的照顾，整个家子都指望你赚钱，别到了这个时候，你才意识到赚钱是那么的重要，更何况现在城市的房价，动不动就是100万，加上按揭的利息，你很可能需要支付150万。还可能需要装修，买车子。可能你身上的压力是200万。别觉得谈钱就俗，你要学会赚钱，要有个需要赚钱的良好意识，当然你出身富裕家庭，就不用考虑这些因素了。</p></li><li><p>每天一点点进步，每月一点点积累，要敬业要爱业，我们给别人提供的也是服务。<br>总有一天，你也会有累的时候，你也会有老的时候，这时候，你要靠啥呢？就要靠你平时的积累，你10年的积累，可以打倒很多竞争对手，他们再厉害，再怎么样，也很难抵得过你10年的积累，特别是后面5-10年的积累，成果会很明显，前面的1-5年，算是做软件的入门吧，除非你有高人指点，那可能2-3年就可以修成正果，软件在将来还是会值钱的，以为生活会越来越智能化，越来越数字化，软件的需求还是很有前途，最起码未来的10-20年里不用太担心失业问题了。</p></li><li><p>对程序员来讲，开发思想、架构、代码就是财富，别老丢弃你的劳动成果，要学会保护你的劳动成果。<br>我大概7-8年前的代码都在手上，经常改进来改进去，维护来维护去，在一定的程度上，让我生活轻松了不少，因为我不用什么都从头来过，我只要痛苦一次，以后就要反复重复利用，软件的价值在于重复利用，而不是每个东西，都从头开发，那永远也是辛苦的程序员，这个生活质量就别提了，不管自己的代码丑还是拿不出手，要学会精心维护，每天改进一点点，每个月一个小进步，每年一个大进步，多年的积累是宝贵的，这个早晚也会给你带来丰厚的收益。</p></li><li><p>当程序员要防止原地踏步，不是工作年限长了，经验就丰富了，能力就强了，年纪越大工作越难找。<br>我有一个朋友跟我开玩笑，工作5年的人，可能能力差距会很大，为什么呢？因为第一年他们干的事情都是一样的，都写程序了，2个人可能由于价值观不一样，5年后差距会很大，甚至是大到无法追赶的程度，为啥？因为还有机会的因素在里面，有的人干了5年，还是在原地踏步，天天只会写那些添加、删除、修改的代码。那你得注意了，需要不断的提高自己，才是硬道理。例如你会SQLServer，那要试着学习Oracle， 你是做C/S的，那得需要提高到B/S的，你是做单机软件的，那得需要提高到网络软件，你只关注自己的工作的，需要学会管理，关心他人的工作。你是当程序员的，要试着提高当项目经理、部门经理，公司的总监等等，人有野心有目标才会不断进步，最俗的为了多赚钱，提高工作职位工作岗位，工作单位，也是可以理解的。<br>年纪越大工作越难找，例如3-4千的工作是随便找找，玩一样，但是你30过后，最起码要找月薪上1万的工作，这样的工作是机会也少，一般小公司也给不起，还得找个好公司才可以，好公司又不是天天招聘人，天天缺好的工作岗位，说不好听点儿，小公司的老板才赚多少啊？他来钱也很不容易的，小池塘就不好容得下大鲨鱼了。</p></li><li><p>当创业的收入比打工还少时，那就别创业，要找比自己能力强的人创业，你不会吃亏。<br>创业的收入，比打工还少，那就是瞎扯蛋，恶搞。创业的真正意思并不是要你去吃苦没钱赚，那是忽悠无知的人的。当你创业时的收入，比打工还多，那你可以考虑创业，没有工资什么的，股份啥的，都是瞎扯蛋。<br>不要跟自己能力还弱的人一起创业，那损失最大的，很可能就是你，要创业，也要找比自己强的人一起创业，最起码赚不到钱，还能学到不少。不会有过多的损失。别热血一沸腾就创业了，创业了，也别烧自己的钱，家人的钱，那是很不抗烧的，没几下几十万就烧干了。<br>其实打工，也是创业的开始，每个月都能拿到钱，还可以学到知识，什么公司的股份都是空话，没几个小公司能成功，开起来了也走不了3年就分家了，都忽悠小孩子玩的，除非真的有科技含量或者是客户资源的，否则股份是一文钱不值的，就算创业每个月也按时拿工资才是硬道理。</p></li><li><p>未来的生活节奏会更快，生活压力会更大，竞争会更激烈，社会服务体系会更完善。<br>在未来，我们享受良好的服务的同时，也会为别人提供更良好的服务，需要在技能上还是服务质量上的要求会更高更严格。平时要注意提高自己，不要被时代淘汰掉，我从小的朋友，一波又一波被社会无情的淘汰了，很小的时候，我出生在大草原与大山的交界处，我小时候的玩伴，还在大山里，我跟着家人杀出来了，我小学、中学、大学、工作上的、这10年，我一直很坚强的拼搏下来，很不容易的在杭州立住脚了，说实话，参加工作后的十年，也是不断拼搏，不断提高的十年。</p></li></ol>]]></content>
     
     <summary type="html">
     
