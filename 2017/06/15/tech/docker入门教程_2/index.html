@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		
+        <meta name="baidu-site-verification" content="AhyZvSKaE9" />
+        <meta name="google-site-verification" content="uwZvybv7detxwREFVRUoSOoMhAweNopJTmwn53IHiMI" />
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="">
+        <link rel="shortcut icon" href="/css/images/avatar2.png"/>
+        <link rel="canonical" href="http://guolinn.com/">
+        <link rel="alternate" type="application/rss+xml" title="Kevin" href="/atom.xml">
+        <title>使用dockerfile构建镜像&lt;一&gt; | Riptide</title>
+        <meta name="description" content="{{meta_description}}">
+
+        <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/styles/crisp.css">
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="MobileOptimized" content="320" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    
+		<body class="post-template">
+	
+
+        <header id="header">
+            <a id="logo" href="/"><img src="/css/images/banner.jpg" alt="Riptide" /></a>
+            <h1><a href="/">Kevin</a></h1>
+            <p>Look at the stars,look how they shine for you</p>
+            <div id="follow-icons">
+          <a target="blank" href="http://github.com/aeolusheath"><i class="fa fa-github-square fa-2x"></i></a>
+          <a target="blank" href="http://twitter.com/invekkevin"><i class="fa fa-twitter-square fa-2x"></i></a>
+          <a target="blank" href="/atom.xml"><i class="fa fa-rss-square fa-2x"></i></a>
+  </div>
+<h6><a href="/about">About</a></h6>
+        </header>
+
+        <main id="content">
+        
+
+<article class="post">
+  六月 15, 2017
+  
+    <span class="taglist">  &middot; 
+    
+    
+      <a href='/tags/tech/'>tech</a> 
+    
+      <a href='/tags/docker/'>docker</a> 
+    
+    </span>
+  
+
+  <h1 class="post-title">使用dockerfile构建镜像<一></h1>
+  <section class="post-content article-entry">
+    <p>&#160;&#160; 今天我们来学习一下利用dockerfile 来构建镜像。<br><a id="more"></a><br>&#160;&#160; 我们知道 <code>docker comit</code> 命令也可以构建一个新的镜像，但是这个操作大部分情况下是不可控制的，这个操作对镜像的操作都是黑箱操作，除了制作镜像的人知道执行过什么命令，怎么生成的镜像，其他的人不知道。 而且： docker commit 这个操作，是在原有镜像的基础上，每执行一次命令，就会在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像。</p>
+<p>&#160;&#160; 这样如果使用docker commit 制作镜像，以及后期修改的话，每一次修改都会让镜像更加臃肿一次。</p>
+<p>&#160;&#160; 所以我们要使用dockerfile 来构建镜像, 按照<a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="external">官方文档</a>的解释，dockerfile是一个文本文件，这个文本文件包含了用户想聚合或者配置到镜像里面所需要的所有指令。</p>
+<blockquote>
+<p>怎么使用？</p>
+</blockquote>
+<p>&#160;&#160; 使用<code>docker build</code> 命令来构建镜像，但是这个命令需要一个Dockerfile文件 和  <em>上下文</em> （或者直接理解为一个目录的内容吧，po主自己加的）。 构建上下文指的是在本地路径 <code>PATH</code> 或者 <code>URL</code> 范围内的所有文件。 PATH 指的是本地文件系统， URL 特指Git 仓库地址。 </p>
+<p>&#160;&#160; 当前目录是这样的，存在两个文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ls</span></div><div class="line">Dockerfile        Dockerfile.ubuntu</div></pre></td></tr></table></figure></p>
+<p>&#160;&#160; 比如我们现在运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build .</div><div class="line"><span class="comment">#这个命令没有指定Dockerfile的位置，你可以使用docker build --help 查看</span></div><div class="line"><span class="comment">#缺省Dockerfile 是PATH/Dockerfile ./Dockerfile 是存在的这个文件的</span></div></pre></td></tr></table></figure></p>
+<p>&#160;&#160; 它做了什么呢，执行构建的是Docker守护进程，而不是docker cli，做的第一件事就是将.(当前整个目录)的文件发给Docker daemon。 大部分情况下，应该将Dockerfile放到一个空的目录下面，最好只放一个Dockerfile文件。（警告： 当然不要使用根目录，如果将dockerfile放到根目录<code>/</code>，构建的时候，会将整个硬盘的所有内容copy一份到Docker daemon）。还好docker 有.dockerignore文件，类似.gitignore，此处省略多字，相信你能明白。</p>
+<p>&#160;&#160; 当然我们也可以指定Dockerfile的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build <span class="_">-f</span> /path/<span class="keyword">in</span>/you/any/<span class="built_in">local</span>/filesystem/Dockerfile</div></pre></td></tr></table></figure>
+<p>&#160;&#160; 可以构建不同tag的多个镜像，like this（本机测试）:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">docker</span> <span class="selector-tag">build</span> . <span class="selector-tag">-t</span> <span class="selector-tag">nginx</span><span class="selector-pseudo">:v333.01</span> <span class="selector-tag">-t</span> <span class="selector-tag">ngnix</span><span class="selector-pseudo">:v333.02</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> build . -t nginx:v333.01 -t ngnix:v333.02</div><div class="line">Sending build context to Docker daemon 3.072 kB</div><div class="line">Step 1/3 : FROM nginx</div><div class="line"> ---&gt; 958a7ae9e569</div><div class="line">Step 2/3 : CMD <span class="built_in">echo</span> <span class="variable">$HOME</span></div><div class="line"> ---&gt; Running <span class="keyword">in</span> 1ad7f1dd9964</div><div class="line"> ---&gt; 66e037162e28</div><div class="line">Removing intermediate container 1ad7f1dd9964</div><div class="line">Step 3/3 : RUN <span class="built_in">echo</span> <span class="string">'&lt;h1&gt; Hello. Docker ! second version &lt;/h1&gt;'</span> &gt; /usr/share/nginx/html/index.html &amp;&amp; <span class="built_in">echo</span> <span class="string">'what s going on'</span></div><div class="line"></div><div class="line">---&gt; Running <span class="keyword">in</span> 7ae3b76417c6</div><div class="line">what s going on</div><div class="line"> ---&gt; d4e9bdc765e4</div><div class="line">Removing intermediate container 7ae3b76417c6</div><div class="line">Successfully built d4e9bdc765e4</div></pre></td></tr></table></figure>
+<p>&#160;&#160; 最终的结果：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> images</div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">nginx               v333.01             d4e9bdc765e4        30 seconds ago      109 MB</div><div class="line">ngnix               v333.02             d4e9bdc765e4        30 seconds ago      109 MB</div></pre></td></tr></table></figure></p>
+<hr>
+<p>&#160;&#160; 我们来看 Dockerfile的格式。<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">INSTRUCTION arguments</span></div></pre></td></tr></table></figure></p>
+<p>&#160;&#160; 这里的INSTRUCTION指令有多个关键字: <code>FROM</code>, <code>RUN</code>, <code>CMD</code>, <code>LABEL</code>, <code>EXPOSE</code>, <code>ENV</code>, <code>ADD</code>, <code>COPY</code>, <code>ENTRYPOINT</code>…</p>
+<blockquote>
+<p>ENV</p>
+</blockquote>
+<p>&#160;&#160; 我们先说ENV,env 大白话可以理解为环境变量。语法是这样：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ENV &lt;key&gt; &lt;value&gt;</div><div class="line">ENV &lt;key&gt; = &lt;value&gt;</div><div class="line"></div><div class="line"><span class="comment">#这样声明，这种声明方式只能声明单个变量</span></div><div class="line">ENV usr root</div><div class="line"><span class="comment">#这种声明方式可以声明多个环境变量</span></div><div class="line">ENV usr=root pass=<span class="built_in">pwd</span></div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>FROM</p>
+</blockquote>
+<p>&#160;&#160; 顾名思义就是我们要构建的镜像的来源或者基础，语法是这样：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">FROM &lt;image&gt;</div><div class="line"><span class="comment">#or </span></div><div class="line">FROM &lt;image&gt;:&lt;tag&gt;</div><div class="line"><span class="comment">#or</span></div><div class="line">FROM &lt;image&gt;@&lt;digest&gt;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>RUN</p>
+</blockquote>
+<p>&#160;&#160; RUN 命令是制作镜像里面常用的命令，有两种写法<br> <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RUN &lt;<span class="built_in">command</span>&gt;</div><div class="line">RUN  [<span class="string">"executable"</span>, <span class="string">"param1"</span>，<span class="string">"param2"</span>]</div></pre></td></tr></table></figure></p>
+<p> <strong>tips</strong>: Dockerfile中的每一个指令都会在镜像上面新增一层中间层镜像，直至最外层镜像，所以执行RUN指令的时候，可以合并多个RUN 指令，最好不要一次性写多个,请看下面的操作<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># bad way</span></div><div class="line">RUN <span class="built_in">echo</span> hello </div><div class="line">RUN <span class="built_in">echo</span> docker</div><div class="line"><span class="comment"># good way</span></div><div class="line">RUN <span class="built_in">echo</span> hello \ </div><div class="line">  &amp;&amp; <span class="built_in">echo</span> docker</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>CMD </p>
+</blockquote>
+<p>&#160;&#160;Docker不是虚拟机，容器就是进程，如果是进程，进程启动的时候，就需要指定启动程序或者参数。 在Dockerfile里面只能有一个<code>CMD</code>,如果有多个的话，则只有最后一个CMD才会生效。<code>CMD</code>的主要目的为正在运行的容器提供一些默认的值或者行为。有三种形式（一般推荐exec 格式）：</p>
+<ul>
+<li>CMD [“executable”,”param1”,”param2”] (exec form, this is the preferred form)</li>
+<li>CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT)</li>
+<li>CMD command param1 param2 (shell form)</li>
+</ul>
+<p>&#160;&#160; <strong>tip</strong>: 第一种和第三种方式的命令，在docker run 的时候 后面可以执行其他命令，将这个命令给覆盖掉。比如我们Dockerfile是这样写的</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> ubuntu:latest</div><div class="line"><span class="keyword">CMD</span><span class="bash"> /bin/bash</span></div></pre></td></tr></table></figure>
+<p>&#160;&#160;或者</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> ubuntu:latest</div><div class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo <span class="variable">$HOME</span>"</span> ]</span></div></pre></td></tr></table></figure>
+<p>我们这样运行： <code>docker run -it --rm ubuntu:v4 cat /etc/os-release</code>, 后面的 <code>cat /etc/os-release</code>将默认的CMD命令给替换了,打印的结果长这样:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run -it --rm ubuntu:v4 cat /etc/os-release</div><div class="line">NAME=<span class="string">"Ubuntu"</span></div><div class="line">VERSION=<span class="string">"16.04.2 LTS (Xenial Xerus)"</span></div><div class="line">ID=ubuntu</div><div class="line">ID_LIKE=debian</div><div class="line">PRETTY_NAME=<span class="string">"Ubuntu 16.04.2 LTS"</span></div><div class="line">VERSION_ID=<span class="string">"16.04"</span></div><div class="line">HOME_URL=<span class="string">"http://www.ubuntu.com/"</span></div><div class="line">SUPPORT_URL=<span class="string">"http://help.ubuntu.com/"</span></div><div class="line">BUG_REPORT_URL=<span class="string">"http://bugs.launchpad.net/ubuntu/"</span></div><div class="line">VERSION_CODENAME=xenial</div><div class="line">UBUNTU_CODENAME=xenial</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>LABEL</p>
+</blockquote>
+<p>&#160;&#160; <code>LABEL</code>指令可以像镜像添加metadata元数据，和<code>ENV</code>一样是key-value的形式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LABEL <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> <span class="tag">&lt;<span class="name">key</span>&gt;</span>=<span class="tag">&lt;<span class="name">value</span>&gt;</span> ...</div></pre></td></tr></table></figure>
+<p>&#160;&#160; <code>LABEL</code> 和 <code>RUN</code>指令一样，docker官方推荐将多个labels合并到一个单独的LABEL如果可能的话，每一条LABEL指令都会添加一个新的层，最后都会生成多个无效的中间层镜像，若存在多个同名的key，则最后一个会覆盖之前的key。</p>
+<blockquote>
+<p>EXPOSE</p>
+</blockquote>
+<p>&#160;&#160; 这个不是暴露端口，该指令告知Docker这个容器在运行的时候监听的那些端口。这并不会让HOST访问到容器的这些端口，如果你要达到这个目的，要使用-p参数，比如我们启动一个nginx:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$docker</span> run <span class="_">-d</span> -p 81:80 --name nginx-web nginx:latest</div></pre></td></tr></table></figure>
+<p>&#160;&#160; 这样就会暴露容器的80端口给host的81端口，可以直接localhost:81访问container的nginx服务。也可以不这样做，比如我们在Dockerfile里面声明了多个端口: 80 90 </p>
+<p>&#160;&#160; 在启动容器的时候这样写 docker run -d <code>-P</code> –name container-name image:tag 这样会自动将container的90 80端口暴露给host。我们可以通过docker ps  查看ports这一项。</p>
+<blockquote>
+<p>ENTRYPOINT</p>
+</blockquote>
+<p>&#160;&#160; 它和CMD 一样，都是指定容器的启动程序以及参数，但是和CMD 不同的是替换起来，要加一个参数 <code>--entrypoint</code></p>
+<p>&#160;&#160; 两种形式： </p>
+<ul>
+<li>ENTRYPOINT [“executable”, “param1”, “param2”] (exec form, preferred)</li>
+<li>ENTRYPOINT command param1 param2 (shell form)</li>
+</ul>
+<p>&#160;&#160; 通常是和 CMD 一起使用，请查看docker <a href="https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact" target="_blank" rel="external">官方介绍</a> </p>
+
+  </section>
+  <footer class="post-footer">
+    <!--
+    <section class="author">
+      <h4>Kevin</h4>
+      <p></p>
+    </section>
+    -->
+  </footer>
+</article>
+
+<nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2017/01/07/新的一年/">
+         next → 新的一年
+    </a>
+    
+</nav>
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'thekevin2015';
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">Comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+        </main>
+        <footer id="footer">
+            <section id="footer-message">&copy; 2017 Kevin. All rights reserved. Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. <a href="https://github.com/guolin/crisp-hexo-theme" target="_blank">crisp</a> theme by <a href="guolin.github.io" target="_blank">Guo Lin</a>.</section>
+        </footer>
+        
+        
+
+          <script>
+          (function(){
+              var bp = document.createElement('script');
+              var curProtocol = window.location.protocol.split(':')[0];
+              if (curProtocol === 'https') {
+                  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+              }
+              else {
+                  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+              }
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(bp, s);
+          })();
+          </script>
+
+    </body>
+</html>
+
+
