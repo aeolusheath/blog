@@ -30,7 +30,7 @@
 	
 
         <header id="header">
-            <a id="logo" href="/"><img src="/css/images/banner.jpg" alt="Riptide" /></a>
+            <a id="logo" href="/"><img class="logo-img clip-path" src="/css/images/banner.jpg" alt="Riptide" /></a>
             <h1><a href="/">Kevin</a></h1>
             <p>Look at the stars,look how they shine for you</p>
             <div id="follow-icons">
@@ -160,6 +160,19 @@
           var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
           dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
           (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          // setTimeout(function(){
+          //   document.getElementById('content').style.height='auto'
+          // }, 500) 
+
+          var interval = setInterval(function() {
+          var disqusHeight = document.getElementById('disqus_thread').clientHeight;
+          console.log(disqusHeight, document.getElementById('disqus_thread'),'hegith---->>>')
+          if ( disqusHeight > 78 ) {  // height 52px is header of Disqus, more than 52px means that disqus load comments
+            // Your code
+              document.getElementById('content').style.height='auto'
+              clearInterval(interval); // after loaded comment we stop this script
+          }
+      }, 100);         
       })();
   </script>
   <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
