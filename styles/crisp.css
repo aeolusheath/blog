@@ -54,7 +54,8 @@ header {
 #content {
 	display: block;
 	width: 100%;
-	height: calc(100% - 19px); 
+	/* height: calc(100% - 19px);  */
+	height: auto;
 }
 footer {
 	/* padding: 1em 0em 2.5em 0em; */
